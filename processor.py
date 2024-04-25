@@ -22,12 +22,12 @@ for i in range(1,5):
             for l in range (1,4):
                 data = re.sub(rf'(?<=(G0 X\d{{{i}}}.\d{{{k}}} Y\d{{{j}}}.\d{{{l}}}))\n','\nG0 Z5\n',data)
 data = re.sub(r'G1','G0',data)
-data = re.sub(r'F\d*','F2000',data)
+data = re.sub(r'F\d*','F5000',data)
 data = re.sub(r'^([^\n]*\n){2}','G21\nG90\nG0 Z5 F1000\n',data)
 data = re.sub(r'\nM2','G0 Z10',data)
 
 #offset
-data = re.sub(r'(?<=X)(\d*[.]\d*|(\d*))',lambda m : str(float(m.group(0))+42),data)
+data = re.sub(r'(?<=X)(\d*[.]\d*|(\d*))',lambda m : str(float(m.group(0))+40),data)
 data = re.sub(r'(?<=Y)(\d*[.]\d*|(\d*))',lambda m : str(float(m.group(0))+17),data)
 data = re.sub(r'(?<=([.]\d{3}))\d*','',data)
 
@@ -43,6 +43,9 @@ for id,n in enumerate(indices[:-1]):
     st = windices[id][1]
     su = windices[id][0]
     en = windices[id+1][0]
+    # data = re.sub(rf'^[\s\S]{{{st}}} (?<=Y)(\d*[.]\d*|(\d*)) [\s\S]{{{len(data)-en}}}$',lambda m : str(float(m.group(0))+off),data)
+    # data = re.sub(rf'^[\s\S]{{{su}}} (?<=Y)(\d*[.]\d*|(\d*)) [\s\S]{{{len(data)-st}}}$',lambda m : str(float(m.group(0))+off),data)
+
     data = data[:st]+re.sub(r'(?<=Y)(\d*[.]\d*|(\d*))',lambda m : str(float(m.group(0))+off),data[st:en])+data[en:]
     data = data[:su]+re.sub(r'(?<=Y)(\d*[.]\d*|(\d*))',lambda m : str(float(m.group(0))+off),data[su:st])+data[st:]
 

@@ -18,7 +18,7 @@ use svg2gcode::{svg2program, ConversionOptions, Machine, Settings, SupportedFunc
 #[derive(Debug, StructOpt)]
 #[structopt(name = "svg2gcode", author, about)]
 struct Opt {
-    /// Curve interpolation tolerance (mm)
+
     #[structopt(long)]
     tolerance: Option<f64>,
     /// Machine feed rate (mm/min)
@@ -79,17 +79,11 @@ struct Opt {
     ///
     /// Useful for streaming g-code
     checksums: Option<bool>,
-    #[structopt(long)]
-    /// Add a newline character before each comment
-    ///
-    /// Workaround for parsers that don't accept comments on the same line
-    newline_before_comment: Option<bool>,
+    #[structopt(long)] newline_before_comment: Option<bool>, // Add a newline character before each comment  Workaround for parsers that don't accept comments on the same line
 }
 
 fn main() -> io::Result<()> {
-    if env::var("RUST_LOG").is_err() {
-        env::set_var("RUST_LOG", "svg2gcode=info")
-    }
+    if env::var("RUST_LOG").is_err() { env::set_var("RUST_LOG", "svg2gcode=info") }
     env_logger::init();
 
     let opt = Opt::from_args();
@@ -97,9 +91,7 @@ fn main() -> io::Result<()> {
     let settings = {
         let mut settings = if let Some(path) = opt.settings {
             serde_json::from_reader(File::open(path)?)?
-        } else {
-            Settings::default()
-        };
+        } else { Settings::default()};
 
         {
             let conversion = &mut settings.conversion;

@@ -1,6 +1,6 @@
 #!/bin/bash
 NAME=$1
-PAGES=$(pdfinfo splitf.pdf |grep Pages | sed 's/[^0-9]*//')
+PAGES=$(pdfinfo $NAME |grep Pages | sed 's/[^0-9]*//')
 echo converting $NAME with $PAGES pages
 
 gs -o _$NAME -dNoOutputFonts -sDEVICE=pdfwrite $NAME
