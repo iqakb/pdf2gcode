@@ -1,42 +1,67 @@
-# larprak
-*Pengelar Laporan Praktikum*
+# pdf2gcode
 
-## Prasyarat
-1. Pasang environment Rust
-2. Pasang environment Python
-3. Pasang cpp-poppler
-4. Pasang ghostscript
+*Practical Report Plotter*
 
-## Langkah Pemasangan
-1. Clone repositori ini
-2. Install cargo svg2gcode dengan menjalankan `cargo install --path cli/`
+## Prerequisites
 
-## Langkah Penggunaan
-1. Proses file pdfmu dengan `./convertor.sh <filepdfmu>`. Pastikan pdfmu tidak melebihi 10000x10000mm
-2. Tinjau ulang hasil gcode yang terproses dengan https://zupfe.velor.ca/. Jika ada keganjalan, berarti, pada kode `processor.py`, ada yang salah.
-3. Kirim gcode dokumen ke 3D printer
-4. Kalibrasi penamu sehingga pena menyentuh bed 3d printer atau kertas saat z=5mm. Gunakan komunikasi serial atau menu 3D printer.
-5. Setting sehingga z=10mm
-6. Print gcode dokumenmu
+1. Install Rust environment
+2. Install Python environment
+3. Install cpp-poppler
+4. Install ghostscript
 
+## Installation Steps
 
-## Kalibrasi
-1. Offset defaultnya adalah x=40mm dan y=17mm. Untuk mengecek apakah sudah cocok, print file gcode `cal_4333_40_17.gcode`
-2. Jika belum cocok, jalan skrip `offset.py` dengan syntax berikut
+1. Clone this repository
+2. Install cargo svg2gcode by running:
+
 ```bash
-python3.8 ~/larprak/offset.py -f <namafileinput.gcode> -o <namafileoutput.gcode> -x <offset x dalam milimeter> -y <offset y dalam milimeter>
+cargo install --path cli/
 ```
-contoh:
+
+## Usage Steps
+
+1. Process your PDF file using:
+
 ```bash
-python3.8 ~/larprak/offset.py -f tes.gcode -o tesgeser.gcode -x 12 -y -2.3
+./convertor.sh <yourpdf>
 ```
-3. Offset `cal_4333_40_17.gcode` sesuai kebutuhan
-4. Cek ulang hasil offset
 
+Ensure your PDF does not exceed 10000x10000mm. 
 
-### Alat lain:
-* `convertor.sh` untuk mengonversi pdf banyak halaman ke gcode dengan penggeseran artifisial
-* `convertor_s.sh` untuk mengonversi pdf satu halaman ke gcode dengan penggseran artifisial
-* `processor.py` untuk mengonversi gcode untuk bisa digunakan pada 3d printer dengan penggeseran artifisial
-* `convertor.sh` untuk mengonversi gcode untuk bisa digunakan pada 3d printer tanpa penggeseran artifisial
-* `offset.py` untuk menggeser keseluruhan file gcode
+2. Review the generated G-code using [this viewer](https://zupfe.velor.ca/). If there are any anomalies, check the `processor.py` code.
+3. Send the document's G-code to the 3D printer.
+4. Calibrate your pen so that it touches the 3D printer bed or paper when z=5mm. Use serial communication or the 3D printer menu.
+5. Set z=10mm.
+6. Print your document's G-code.
+
+## Calibration
+
+1. The default offset is x=40mm and y=17mm. To check if it's correct, print the G-code file:
+
+```bash
+cal_4333_40_17.gcode
+```
+
+2. If it's incorrect, run the `offset.py` script with the following syntax:
+
+```bash
+python3.8 ~/larprak/offset.py -f <inputfile.gcode> -o <outputfile.gcode> -x <x offset in millimeters> -y <y offset in millimeters>
+```
+
+Example:
+
+```bash
+python3.8 ~/larprak/offset.py -f test.gcode -o shifted_test.gcode -x 12 -y -2.3
+```
+
+3. Adjust the offset in `cal_4333_40_17.gcode` as needed.
+4. Recheck the offset results.
+
+## Additional Tools
+
+- `convertor.sh` — converts multi-page PDFs to G-code with artificial shifting.
+- `convertor_s.sh` — converts single-page PDFs to G-code with artificial shifting.
+- `processor.py` — converts G-code for use on a 3D printer with artificial shifting.
+- `convertor.sh` — converts G-code for use on a 3D printer without artificial shifting.
+- `offset.py` — shifts the entire G-code file.
+
